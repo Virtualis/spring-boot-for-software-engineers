@@ -11,7 +11,7 @@ public interface UserDao {
 
     User getUser(UUID userUid);
 
-    int updateUser(UUID userUid);
+    int updateUser(User user);
 
     int deleteUser(UUID userUid);
 
