@@ -49,7 +49,7 @@ public class User {
         return email;
     }
 
-    private enum Gender {
+    public enum Gender {
         MALE,
         FEMALE
     }
