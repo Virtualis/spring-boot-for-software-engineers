@@ -11,14 +11,14 @@ public class FakeDataDao implements UserDao {
     private static Map<UUID, User> database;
 
     static {
-        database = new HashMap();
+        database = new HashMap<>();
         UUID joeUserUid = UUID.randomUUID();
         database.put(joeUserUid, new User(joeUserUid, "Joe", "Jones", User.Gender.MALE, 22, "joe.jones@gmail.com"));
     }
 
     @Override
     public List<User> selectAllUsers() {
-        return new ArrayList(database.values());
+        return new ArrayList<>(database.values());
     }
 
     @Override
