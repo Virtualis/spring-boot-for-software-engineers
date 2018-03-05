@@ -22,8 +22,8 @@ public class FakeDataDao implements UserDao {
     }
 
     @Override
-    public User selectUserByUserUid(UUID userUid) {
-        return database.get(userUid);
+    public Optional<User> selectUserByUserUid(UUID userUid) {
+        return Optional.ofNullable(database.get(userUid));
     }
 
     @Override
@@ -39,8 +39,8 @@ public class FakeDataDao implements UserDao {
     }
 
     @Override
-    public int insertUser(User user) {
-        database.put(user.getUserUid(), user);
+    public int insertUser(UUID userUid, User user) {
+        database.put(userUid, user);
         return 1;
     }
 }
