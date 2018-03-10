@@ -4,16 +4,19 @@ import com.google.common.collect.ImmutableList;
 import com.sun.javafx.collections.ImmutableObservableList;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ua.bohomolov.learningspringboot.dao.FakeDataDao;
 import ua.bohomolov.learningspringboot.model.User;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 public class UserServiceTest {
 
@@ -44,13 +47,37 @@ public class UserServiceTest {
     }
 
     @Test
-    public void getUser() throws Exception {
+    public void shouldGetUser() throws Exception {
+        UUID annaUid = UUID.randomUUID();
+        User annaUser = new User(annaUid, "anna", "montana", User.Gender.FEMALE, 30, "anna@gmail.com");
 
+        given(fakeDataDao.selectUserByUserUid(annaUid)).willReturn(Optional.of(annaUser));
+
+        Optional<User> userOptional = userService.getUser(annaUid);
+        assertThat(userOptional.isPresent()).isTrue();
+
+        User user = userOptional.get();
+        assertThat(user.getUserUid()).isEqualTo(annaUid);
     }
 
     @Test
-    public void updateUser() throws Exception {
+    public void shouldUpdateUser() throws Exception {
+        UUID annaUid = UUID.randomUUID();
+        User annaUser = new User(annaUid, "anna", "montana", User.Gender.FEMALE, 30, "anna@gmail.com");
 
+        given(fakeDataDao.selectUserByUserUid(annaUid)).willReturn(Optional.of(annaUser));
+        given(fakeDataDao.updateUser(annaUser)).willReturn(1);
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        int result = userService.updateUser(annaUser);
+        assertThat(result).isEqualTo(1);
+
+        verify(fakeDataDao).selectUserByUserUid(annaUid);
+        verify(fakeDataDao).updateUser(captor.capture());
+
+        User user = captor.getValue();
+        assertThat(user.getUserUid()).isEqualTo(annaUid);
     }
 
     @Test
