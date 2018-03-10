@@ -15,6 +15,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -81,13 +83,35 @@ public class UserServiceTest {
     }
 
     @Test
-    public void removeUser() throws Exception {
+    public void shouldRemoveUser() throws Exception {
+        UUID annaUid = UUID.randomUUID();
+        User annaUser = new User(annaUid, "anna", "montana", User.Gender.FEMALE, 30, "anna@gmail.com");
 
+        given(fakeDataDao.selectUserByUserUid(annaUid)).willReturn(Optional.of(annaUser));
+        given(fakeDataDao.deleteUserByUserUid(annaUid)).willReturn(1);
+
+        int result = userService.removeUser(annaUid);
+        assertThat(result).isEqualTo(1);
+
+        verify(fakeDataDao).selectUserByUserUid(annaUid);
+        verify(fakeDataDao).deleteUserByUserUid(annaUid);
     }
 
     @Test
-    public void insertUser() throws Exception {
+    public void shouldInsertUser() throws Exception {
+        User annaUser = new User(null, "anna", "montana", User.Gender.FEMALE, 30, "anna@gmail.com");
 
+        given(fakeDataDao.insertUser(any(UUID.class), eq(annaUser))).willReturn(1);
+
+        ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
+
+        int result = userService.insertUser(annaUser);
+        assertThat(result).isEqualTo(1);
+
+        verify(fakeDataDao).insertUser(any(UUID.class), captor.capture());
+        User user = captor.getValue();
+        assertThat(user).isEqualTo(annaUser);
+        assertThat(user.getUserUid()).isNotNull();
     }
 
 }
