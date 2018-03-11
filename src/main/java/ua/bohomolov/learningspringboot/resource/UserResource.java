@@ -2,11 +2,9 @@ package ua.bohomolov.learningspringboot.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.bohomolov.learningspringboot.model.User;
 import ua.bohomolov.learningspringboot.service.UserService;
 
@@ -38,7 +36,7 @@ public class UserResource {
             path = "{userUid}",
             method = RequestMethod.GET
     )
-    public ResponseEntity<?> fetchUser(@PathVariable(name = "userUid") UUID userUid){
+    public ResponseEntity<?> fetchUser(@PathVariable(name = "userUid") UUID userUid) {
         Optional<User> userOptional = userService.getUser(userUid);
         if (!userOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -46,6 +44,19 @@ public class UserResource {
         }
 
         return ResponseEntity.ok(userOptional.get());
+    }
+
+    @RequestMapping(
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Integer> insertUser(@RequestBody User user) {
+        int result = userService.insertUser(user);
+        if (result == 1) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     class ErrorMessage {
