@@ -14,52 +14,52 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 
-    private UserDao userDao;
+	private UserDao userDao;
 
-    @Autowired
-    public UserService(UserDao userDao) {
-        this.userDao = userDao;
-    }
+	@Autowired
+	public UserService(UserDao userDao) {
+		this.userDao = userDao;
+	}
 
-    public List<User> getAllUsers(Optional<String> optionalGender) {
-        List<User> users = userDao.selectAllUsers();
-        if (!optionalGender.isPresent()) {
-        	return users;
-        }
-        
-        try {
-        	Gender gender = Gender.valueOf(optionalGender.get().toUpperCase());
-        	return users.stream()
-        			.filter(user -> user.getGender().equals(gender))
-        			.collect(Collectors.toList());
-        } catch (Exception e) {
-        	throw new IllegalArgumentException("Invalid gender [" + optionalGender.get() + "]", e);
-        }
-    }
+	public List<User> getAllUsers(Optional<String> optionalGender) {
+		List<User> users = userDao.selectAllUsers();
+		if (!optionalGender.isPresent()) {
+			return users;
+		}
 
-    public Optional<User> getUser(UUID userUid) {
-        return userDao.selectUserByUserUid(userUid);
-    }
+		try {
+			Gender gender = Gender.valueOf(optionalGender.get().toUpperCase());
+			return users.stream()
+					.filter(user -> user.getGender().equals(gender))
+					.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Invalid gender [" + optionalGender.get() + "]", e);
+		}
+	}
 
-    public int updateUser(User user) {
-        Optional<User> optionalUser = getUser(user.getUserUid());
-        if (optionalUser.isPresent()) {
-            return userDao.updateUser(user);
-        }
-        return -1;
-    }
+	public Optional<User> getUser(UUID userUid) {
+		return userDao.selectUserByUserUid(userUid);
+	}
 
-    public int removeUser(UUID userUid) {
-        Optional<User> optionalUser = getUser(userUid);
-        if (optionalUser.isPresent()) {
-            return userDao.deleteUserByUserUid(userUid);
-        }
-        return -1;
-    }
+	public int updateUser(User user) {
+		Optional<User> optionalUser = getUser(user.getUserUid());
+		if (optionalUser.isPresent()) {
+			return userDao.updateUser(user);
+		}
+		return -1;
+	}
 
-    public int insertUser(User user) {
-        UUID userUid = UUID.randomUUID();
-        user.setUserUid(userUid);
-        return userDao.insertUser(userUid, user);
-    }
+	public int removeUser(UUID userUid) {
+		Optional<User> optionalUser = getUser(userUid);
+		if (optionalUser.isPresent()) {
+			return userDao.deleteUserByUserUid(userUid);
+		}
+		return -1;
+	}
+
+	public int insertUser(User user) {
+		UUID userUid = UUID.randomUUID();
+		user.setUserUid(userUid);
+		return userDao.insertUser(userUid, user);
+	}
 }
