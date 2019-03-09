@@ -1,7 +1,6 @@
 package ua.bohomolov.learningspringboot.service;
 
 import com.google.common.collect.ImmutableList;
-import com.sun.javafx.collections.ImmutableObservableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -41,7 +40,7 @@ public class UserServiceTest {
 
         given(fakeDataDao.selectAllUsers()).willReturn(users);
 
-        List<User> allUsers = userService.getAllUsers();
+        List<User> allUsers = userService.getAllUsers(Optional.empty());
         assertThat(allUsers).hasSize(1);
 
         User user = allUsers.get(0);
