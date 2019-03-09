@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.ws.rs.QueryParam;
+
 @RestController
 @RequestMapping(
         path = "/api/v1/users"
@@ -28,7 +30,8 @@ public class UserResource {
     @RequestMapping(
             method = RequestMethod.GET
     )
-    public List<User> fetchUsers() {
+    public List<User> fetchUsers(@QueryParam("gender") String gender, @QueryParam("age") Integer age) {
+    	System.out.println(gender + " " + age);
         return userService.getAllUsers();
     }
 
