@@ -16,7 +16,8 @@ import javax.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping(
-		path = "/api/v1/users")
+		path = "/api/v1/users"
+)
 public class UserResource {
 
 	private UserService userService;
@@ -27,7 +28,9 @@ public class UserResource {
 	}
 
 	@RequestMapping(
-			method = RequestMethod.GET)
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public List<User> fetchUsers(@QueryParam("gender") String gender, @QueryParam("age") Integer age) {
 		Optional<String> optionalGender = Optional.ofNullable(gender);
 		return userService.getAllUsers(optionalGender);
@@ -35,7 +38,9 @@ public class UserResource {
 
 	@RequestMapping(
 			path = "{userUid}",
-			method = RequestMethod.GET)
+			method = RequestMethod.GET,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public ResponseEntity<?> fetchUser(@PathVariable(name = "userUid") UUID userUid) {
 		Optional<User> userOptional = userService.getUser(userUid);
 		if (!userOptional.isPresent()) {
@@ -48,7 +53,9 @@ public class UserResource {
 
 	@RequestMapping(
 			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public ResponseEntity<Integer> insertUser(@RequestBody User user) {
 		int result = userService.insertUser(user);
 		return getIntegerResponseEntity(result);
@@ -56,7 +63,9 @@ public class UserResource {
 
 	@RequestMapping(
 			method = RequestMethod.PUT,
-			consumes = MediaType.APPLICATION_JSON_VALUE)
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public ResponseEntity<Integer> updateUser(@RequestBody User user) {
 		int result = userService.updateUser(user);
 		return getIntegerResponseEntity(result);
@@ -64,7 +73,9 @@ public class UserResource {
 
 	@RequestMapping(
 			path = "{userUid}",
-			method = RequestMethod.DELETE)
+			method = RequestMethod.DELETE,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
 	public ResponseEntity<Integer> deleteUser(@PathVariable("userUid") UUID userUid) {
 		int result = userService.removeUser(userUid);
 		return getIntegerResponseEntity(result);
