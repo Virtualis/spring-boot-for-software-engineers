@@ -14,16 +14,16 @@ import java.util.UUID;
 
 import javax.ws.rs.QueryParam;
 
-@RestController
-@RequestMapping(
-		path = "/api/v1/users"
-)
-public class UserResource {
+//@RestController
+//@RequestMapping(
+//		path = "/api/v1/users"
+//)
+public class UserResourceSpringMvc {
 
 	private UserService userService;
 
 	@Autowired
-	public UserResource(UserService userService) {
+	public UserResourceSpringMvc(UserService userService) {
 		this.userService = userService;
 	}
 
