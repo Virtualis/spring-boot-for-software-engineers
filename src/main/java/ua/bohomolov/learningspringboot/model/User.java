@@ -2,62 +2,67 @@ package ua.bohomolov.learningspringboot.model;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class User {
 
-    private UUID userUid;
+	private final UUID userUid;
 
-    private String firstName;
+	private final String firstName;
 
-    private String lastName;
+	private final String lastName;
 
-    private Gender gender;
+	private final Gender gender;
 
-    private Integer age;
+	private final Integer age;
 
-    private String email;
+	private final String email;
 
-    public User() {
-    }
+	public User(
+			@JsonProperty("userUid") UUID userUid,
+			@JsonProperty("firstName") String firstName,
+			@JsonProperty("lastName") String lastName,
+			@JsonProperty("gender") Gender gender,
+			@JsonProperty("age") Integer age,
+			@JsonProperty("email") String email) {
+		this.userUid = userUid;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.age = age;
+		this.email = email;
+	}
 
-    public User(UUID userUid, String firstName, String lastName, Gender gender, Integer age, String email) {
-        this.userUid = userUid;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.age = age;
-        this.email = email;
-    }
+	public UUID getUserUid() {
+		return userUid;
+	}
 
-    public UUID getUserUid() {
-        return userUid;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public void setUserUid(UUID uid) {
-        this.userUid = uid;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public Gender getGender() {
+		return gender;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public Integer getAge() {
+		return age;
+	}
 
-    public Gender getGender() {
-        return gender;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public Integer getAge() {
-        return age;
-    }
+	public enum Gender {
+		MALE,
+		FEMALE
+	}
 
-    public String getEmail() {
-        return email;
-    }
-
-    public enum Gender {
-        MALE,
-        FEMALE
-    }
+	public static User newUser(UUID userUid, User user) {
+		return new User(userUid, user.firstName, user.lastName, user.gender, user.age, user.email);
+	}
 }
