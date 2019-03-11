@@ -31,7 +31,7 @@ public class UserResourceSpringMvc {
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public List<User> fetchUsers(@QueryParam("gender") String gender, @QueryParam("age") Integer age) {
+	public List<User> fetchUsers(@QueryParam("gender") String gender) {
 		Optional<String> optionalGender = Optional.ofNullable(gender);
 		return userService.getAllUsers(optionalGender);
 	}
